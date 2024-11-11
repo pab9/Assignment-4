@@ -1,0 +1,135 @@
+##Assignment 4: Turtles and Dragons
+##Question 1: A First Turtle Drawing Function
+import turtle
+def turtle_draw1(commands, step_size, turning_angle):
+  turtle.penup()
+  turtle.goto(0,0)
+  turtle.pendown()
+  for command in commands:
+    if commad == 'F':
+      turtle.forward(step_size)
+    elif command == 'L':
+      turtle.left(turning_angle)
+    elif command == 'R':
+      turtle.right(turning_angle)
+##Example
+turtle_draw1('FF L FFFF L FF L FFFF', 50, 90)  # This draws a rectangle
+turtle_draw1('FF L FFFF L FF L FFFF', 25, 120) # This will create a different shape
+##Question 2: A Second Turtle Drawing Function
+def turtle_draw2(commands, step_size, turning_angle):
+    turtle.penup()
+    turtle.goto(0, 0)
+    turtle.pendown()
+    for command in commands:
+        if command in 'FG':  # 'F' and 'G' move the turtle forward
+            turtle.forward(step_size)
+        elif command in 'L+':  # 'L' and '+' turn left
+            turtle.left(turning_angle)
+        elif command in 'R-':  # 'R' and '-' turn right
+            turtle.right(turning_angle)
+##Example
+turtle_draw2('FG L FGGF + FF + FFFG', 50, 90)  # This draws a rectangle
+turtle_draw2('FG L FGGF + FF + FFFG', 25, 120) # This draws a similar shape with different step and angle
+##Question 3: A Third Turtle Drawing Function
+def turtle_draw3(commands, step_size, turning_angle):
+    for command in commands:
+        if command in 'FG':  # Move forward for 'F' and 'G'
+            turtle.forward(step_size)
+        elif command in 'L+':  # Turn left for 'L' and '+'
+            turtle.left(turning_angle)
+        elif command in 'R-':  # Turn right for 'R' and '-'
+            turtle.right(turning_angle)
+        elif command == 'U':  
+            turtle.penup()
+        elif command == 'D': 
+            turtle.pendown()
+        elif command == 'C':  # Clear the screen without changing the turtle's state
+            turtle.clear()
+        elif command == '*':  # Reset the screen and turtle's state
+            turtle.reset()
+## Example
+def interactive_draw():
+    step_size = float(input('What is the step size? '))
+    turning_angle = float(input('What is the turning angle? '))
+    while True:
+        commands = input('turtle commands> ')
+        if commands == 'exit':
+            return
+        turtle_draw3(commands, step_size, turning_angle)
+##Question 4: Enter the Dragon
+def dragon_rule(commands):
+    result = ""
+    for char in commands:
+        if char == 'F':
+            result += "F+G"
+        elif char == 'G':
+            result += "F-G"
+        else:
+            result += char
+    return result
+def test_dragon_rule():
+    assert dragon_rule('F') == 'F+G'
+    assert dragon_rule('F+G') == 'F+G+F-G'
+    assert dragon_rule('F+G+F-G') == 'F+G+F-G+F+G-F-G'
+    assert dragon_rule('G') == 'F-G'
+    assert dragon_rule('FG') == 'F+GF-G'
+    print('All dragon rule tests pass')
+##Example
+test_dragon_rule()
+##Question 5: Turtle Lists
+def is_turtle_list(x):
+    ## Check if x is a list and has exactly 3 elements
+    if isinstance(x, list) and len(x) == 3:
+        ## Check if the first element is a positive, int or float
+        if isinstance(x[0], (int, float)) and x[0] > 0:
+            ## Check if the second element is an int or float
+            if isinstance(x[1], (int, float)):
+                # Check if the third element is a string
+                if isinstance(x[2], str):
+                    return True
+    return False
+##Example
+def test_is_turtle_list():
+    assert is_turtle_list([1, 2, 'FF'])
+    assert is_turtle_list([25, 120, 'FF L FFFF L FF L FFFF'])
+    assert is_turtle_list([40.33, -29.3, 'any string works'])
+    assert is_turtle_list([40.33, -29.3, ''])
+
+    assert not is_turtle_list([-1, 2, 'FF'])
+    assert not is_turtle_list([1, 'FF'])
+    assert not is_turtle_list([1, 2, 'FF', 'FLFF'])
+
+    assert not is_turtle_list([1, 'FF']) 
+    assert not is_turtle_list(['FF'])
+    assert not is_turtle_list('FF')
+
+    assert not is_turtle_list([])
+    
+    print('All is_turtle_list tests pass')
+test_is_turtle_list()
+##Question 6: Drawing a Turtle List
+def draw_turtle_list(lst):
+    # Check if lst is a valid turtle list
+    if is_turtle_list(lst):
+        step_size = lst[0]
+        turning_angle = lst[1]
+        turtle_commands = lst[2]
+        turtle_draw3(turtle_commands, step_size, turning_angle)
+    else:
+        print(f"Error: {lst} is not a valid turtle list")
+## Example with valid list:
+turtle_list = [50, 90, '*FF L FFFF L FF L FFFF UFFFD FF L FFFF L FF L FFFF']
+draw_turtle_list(turtle_list)  # This should draw two rectangles
+##Example with invalid list:
+draw_turtle_list([1, 2, 3, 'FFLFF'])  # Should print an error message
+##Question 7: Dragon Lists
+def make_dragon_list(n, step_size):
+    ## Generate the dragon curve command string
+    dragon_commands = repeat_rule(n, dragon_rule, 'F')
+    return [step_size, 90, dragon_commands]
+# Example:
+print(make_dragon_list(5, 90))
+## This should output: [5, 90, 'F+G+F-G+F+G-F-G+F+G+F-G-F+G-F-G+F+G+F-G+F+G-F-G-F+G+F-G-F+G-F-G']
+## Drawing the order 5 dragon curve
+draw_turtle_list(make_dragon_list(5, 90))
+turtle.done()
