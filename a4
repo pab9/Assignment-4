@@ -1,4 +1,7 @@
-##Assignment 4: Turtles and Dragons
+# a4.py
+# Full Name: Paige Brooks
+# SFU ID #: 301426363
+# SFU Email: pab9@sfu.ca
 ##Question 1: A First Turtle Drawing Function
 import turtle
 def turtle_draw1(commands, step_size, turning_angle):
